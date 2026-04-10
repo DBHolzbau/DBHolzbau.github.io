@@ -563,6 +563,10 @@ ul {
   font-weight: 600;
 }
 
+.contact-detail {
+  margin-top: 14px;
+}
+
 .phone-row {
   display: flex;
   align-items: flex-end;
