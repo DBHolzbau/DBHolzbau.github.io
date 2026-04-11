@@ -13,6 +13,12 @@
   --shadow-hover: 0 24px 55px rgba(0, 0, 0, 0.12);
   --radius: 22px;
   --transition: all 0.3s ease;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --header-offset: 120px;
+  --hero-min-height: 100vh;
 }
 
 * {
@@ -23,6 +29,9 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-offset);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -30,20 +39,47 @@ body {
   color: var(--text);
   background: var(--white);
   line-height: 1.6;
+  min-width: 320px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 img {
   max-width: 100%;
   display: block;
+  height: auto;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ul {
   list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .container {
@@ -62,11 +98,13 @@ ul {
 /* Navbar */
 .navbar {
   background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 999;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: var(--safe-top);
 }
 
 .nav-content {
@@ -137,7 +175,7 @@ ul {
 /* Hero */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: var(--hero-min-height);
   display: flex;
   align-items: center;
   background:
@@ -174,6 +212,7 @@ ul {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-size: 0.92rem;
   font-weight: 700;
@@ -229,6 +268,7 @@ ul {
   background: rgba(255, 255, 255, 0.12);
   color: var(--white);
   border-color: rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
@@ -472,6 +512,7 @@ ul {
   font-size: 1.15rem;
   cursor: pointer;
   transition: 0.3s ease;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
@@ -668,6 +709,7 @@ ul {
   background: #fffdf9;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
+  background-clip: padding-box;
 }
 
 .contact-form input:focus,
@@ -809,8 +851,8 @@ ul {
 
 .cookie-banner {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: max(24px, calc(var(--safe-right) + 12px));
+  bottom: max(24px, calc(var(--safe-bottom) + 12px));
   z-index: 1200;
   width: min(540px, calc(100vw - 32px));
   background: rgba(30, 24, 20, 0.97);
@@ -881,13 +923,14 @@ ul {
   position: absolute;
   inset: 0;
   background: rgba(18, 14, 11, 0.58);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
 .cookie-modal__dialog {
   position: relative;
   width: min(760px, calc(100vw - 24px));
-  margin: 6vh auto;
+  margin: max(24px, calc(var(--safe-top) + 12px)) auto max(24px, calc(var(--safe-bottom) + 12px));
   background: var(--cream);
   color: var(--text);
   border-radius: 28px;
@@ -947,8 +990,8 @@ ul {
 
 .cookie-status-button {
   position: fixed;
-  left: 18px;
-  bottom: 18px;
+  left: max(18px, calc(var(--safe-left) + 10px));
+  bottom: max(18px, calc(var(--safe-bottom) + 10px));
   z-index: 1100;
   border: 0;
   border-radius: 999px;
@@ -969,6 +1012,58 @@ ul {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+@supports (min-height: 100svh) {
+  :root {
+    --hero-min-height: 100svh;
+  }
+}
+
+@supports (min-height: 100dvh) {
+  :root {
+    --hero-min-height: 100dvh;
+  }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .navbar {
+    background: rgba(255, 255, 255, 0.985);
+  }
+
+  .hero-badge,
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.22);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .slider-btn {
+    background: rgba(30, 24, 20, 0.78);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .cookie-modal__backdrop {
+    background: rgba(18, 14, 11, 0.78);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Responsive */
@@ -1048,6 +1143,10 @@ ul {
 }
 
 @media (max-width: 700px) {
+  :root {
+    --header-offset: 88px;
+  }
+
   .section {
     padding: 72px 0;
   }
@@ -1125,8 +1224,8 @@ ul {
   }
 
   .cookie-banner {
-    right: 10px;
-    bottom: 10px;
+    right: max(10px, calc(var(--safe-right) + 8px));
+    bottom: max(10px, calc(var(--safe-bottom) + 8px));
     width: calc(100vw - 20px);
   }
 
@@ -1146,8 +1245,8 @@ ul {
   }
 
   .cookie-status-button {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
+    left: max(10px, calc(var(--safe-left) + 8px));
+    right: max(10px, calc(var(--safe-right) + 8px));
+    bottom: max(10px, calc(var(--safe-bottom) + 8px));
   }
 }
