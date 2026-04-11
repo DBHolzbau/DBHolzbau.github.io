@@ -1,0 +1,6 @@
+# Alle Suchmaschinen duerfen die Seite crawlen
+User-agent: *
+Allow: /
+
+# Verweis auf die Sitemap
+Sitemap: https://www.dpholzbau.com/sitemap.xml
