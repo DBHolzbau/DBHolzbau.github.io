@@ -725,13 +725,22 @@ select {
   margin: 4px 0 18px;
   font-size: 0.95rem;
   color: var(--text-light);
+  cursor: pointer;
 }
 
 .privacy-consent input {
+  -webkit-appearance: auto;
+  appearance: auto;
   width: 18px;
   height: 18px;
   margin-top: 3px;
   flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  accent-color: var(--wood);
+  cursor: pointer;
 }
 
 .privacy-consent a {
