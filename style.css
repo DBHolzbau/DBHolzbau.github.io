@@ -250,6 +250,20 @@ ul {
   width: 100%;
 }
 
+.form-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.form-mail-btn {
+  border-color: rgba(77, 53, 39, 0.2);
+  color: var(--wood-dark);
+}
+
+.form-mail-btn:hover {
+  background: rgba(139, 94, 60, 0.08);
+}
+
 /* Headings */
 .section-heading {
   margin-bottom: 28px;
