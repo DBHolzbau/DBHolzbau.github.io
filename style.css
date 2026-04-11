@@ -1026,6 +1026,14 @@ select {
   }
 }
 
+@supports (max-height: 100dvh) {
+  @media (max-width: 900px) {
+    .cookie-modal__dialog {
+      max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 32px);
+    }
+  }
+}
+
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .navbar {
     background: rgba(255, 255, 255, 0.985);
@@ -1086,13 +1094,13 @@ select {
 
   .nav-links {
     position: absolute;
-    top: 120px;
+    top: calc(var(--header-offset) + var(--safe-top));
     right: 4%;
     background: var(--white);
     box-shadow: var(--shadow);
     border-radius: 18px;
     padding: 20px;
-    width: 240px;
+    width: min(240px, calc(100vw - 8%));
     flex-direction: column;
     align-items: flex-start;
     opacity: 0;
@@ -1112,7 +1120,7 @@ select {
   }
 
   .hero {
-    min-height: 82vh;
+    min-height: calc(var(--hero-min-height) - var(--header-offset));
   }
 
   .hero-content {
@@ -1136,8 +1144,8 @@ select {
   }
 
   .cookie-modal__dialog {
-    margin: 4vh auto;
-    max-height: 92vh;
+    margin: max(16px, calc(var(--safe-top) + 8px)) auto max(16px, calc(var(--safe-bottom) + 8px));
+    max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 32px);
     overflow: auto;
   }
 }
@@ -1173,7 +1181,7 @@ select {
   }
 
   .nav-links {
-    top: 88px;
+    top: calc(var(--header-offset) + var(--safe-top));
   }
 
   .contact-form-wrap {
