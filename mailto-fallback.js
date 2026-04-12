@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const telefon = (formData.get("telefon") || "").toString().trim();
     const nachricht = (formData.get("nachricht") || "").toString().trim();
 
-    const subject = `Anfrage ueber DP Holzbau Website${name ? ` - ${name}` : ""}`;
+    const subject = `Anfrage über DP Holzbau Website${name ? ` - ${name}` : ""}`;
     const body =
 `Guten Tag,
 
-ich moechte eine Anfrage stellen.
+ich möchte eine Anfrage stellen.
 
 Name: ${name}
 E-Mail: ${email}
@@ -40,7 +40,7 @@ ${nachricht}
 
     if (messageBox) {
       messageBox.innerHTML =
-        "<p class='form-feedback form-feedback--success'>Ihr E-Mail-Programm sollte sich jetzt mit den vorausgefuellten Daten oeffnen.</p>";
+        "<p class='form-feedback form-feedback--success'>Ihr E-Mail-Programm sollte sich jetzt mit den vorausgefüllten Daten öffnen.</p>";
     }
   });
 });
