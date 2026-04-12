@@ -909,6 +909,16 @@ select {
   margin-top: 18px;
 }
 
+.cookie-banner__compact-row {
+  display: none;
+}
+
+.cookie-banner__compact-text {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
 .cookie-action {
   min-width: 150px;
 }
@@ -1244,6 +1254,29 @@ select {
     right: max(10px, calc(var(--safe-right) + 8px));
     bottom: max(10px, calc(var(--safe-bottom) + 8px));
     width: calc(100vw - 20px);
+  }
+
+  .cookie-banner--compact {
+    left: max(10px, calc(var(--safe-left) + 8px));
+    right: max(10px, calc(var(--safe-right) + 8px));
+    width: auto;
+    border-radius: 20px;
+  }
+
+  .cookie-banner--compact .cookie-banner__eyebrow,
+  .cookie-banner--compact h2,
+  .cookie-banner--compact #cookie-banner-text,
+  .cookie-banner--compact .cookie-banner__actions {
+    display: none;
+  }
+
+  .cookie-banner--compact .cookie-banner__content {
+    padding: 18px;
+  }
+
+  .cookie-banner--compact .cookie-banner__compact-row {
+    display: grid;
+    gap: 14px;
   }
 
   .cookie-banner__content,

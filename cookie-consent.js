@@ -11,11 +11,16 @@
     analytics: "Statistik",
     marketing: "Marketing",
   };
+  const legalPagePattern = /(datenschutz|impressum|agb|social-media)\.html$/i;
 
   let preferences = loadPreferences();
   let banner;
   let modal;
   let statusButton;
+
+  function isLegalPage() {
+    return legalPagePattern.test(window.location.pathname);
+  }
 
   function loadPreferences() {
     try {
@@ -111,17 +116,23 @@
     banner.innerHTML = `
       <div class="cookie-banner__content">
         <p class="cookie-banner__eyebrow">Datenschutz &amp; Cookies</p>
-        <h2 id="cookie-banner-title">Ihre Privatsphaere bleibt auf dieser Website die Vorgabe.</h2>
+        <h2 id="cookie-banner-title">Ihre Privatsphäre bleibt auf dieser Website die Vorgabe.</h2>
         <p id="cookie-banner-text">
           Wir verwenden nur technisch notwendige Speicherungen, um Ihre Cookie-Entscheidung zu merken.
-          Optionale Kategorien wie Statistik oder Marketing bleiben standardmaessig deaktiviert und
-          duerfen erst nach Ihrer ausdruecklichen Einwilligung eingesetzt werden.
-          Details finden Sie in unserer <a href="datenschutz.html">Datenschutzerklaerung</a>.
+          Optionale Kategorien wie Statistik oder Marketing bleiben standardmäßig deaktiviert und
+          dürfen erst nach Ihrer ausdrücklichen Einwilligung eingesetzt werden.
+          Details finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.
         </p>
         <div class="cookie-banner__actions">
           <button type="button" class="btn btn-secondary cookie-action" data-cookie-action="reject">Ablehnen</button>
           <button type="button" class="btn btn-outline cookie-action cookie-action--light" data-cookie-action="settings">Einstellungen</button>
           <button type="button" class="btn btn-primary cookie-action" data-cookie-action="accept">Alle akzeptieren</button>
+        </div>
+        <div class="cookie-banner__compact-row">
+          <p class="cookie-banner__compact-text">
+            Die Datenschutzerklärung ist geöffnet. Der Cookie-Hinweis bleibt hier bewusst kompakt.
+          </p>
+          <button type="button" class="btn btn-outline cookie-action cookie-action--light" data-cookie-action="settings-compact">Cookie-Einstellungen</button>
         </div>
       </div>
     `;
@@ -132,17 +143,17 @@
     modal.innerHTML = `
       <div class="cookie-modal__backdrop" data-cookie-close></div>
       <div class="cookie-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
-        <button type="button" class="cookie-modal__close" aria-label="Dialog schliessen" data-cookie-close>&times;</button>
+        <button type="button" class="cookie-modal__close" aria-label="Dialog schließen" data-cookie-close>&times;</button>
         <p class="cookie-banner__eyebrow">Cookie-Einstellungen</p>
         <h2 id="cookie-modal-title">Einwilligungen verwalten</h2>
         <p class="cookie-modal__intro">
-          Notwendige Speicherungen sind fuer die sichere Funktion und fuer die Speicherung Ihrer Auswahl erforderlich.
-          Optionale Kategorien koennen Sie jederzeit zusaetzlich erlauben oder widerrufen.
+          Notwendige Speicherungen sind für die sichere Funktion und für die Speicherung Ihrer Auswahl erforderlich.
+          Optionale Kategorien können Sie jederzeit zusätzlich erlauben oder widerrufen.
         </p>
         <div class="cookie-option">
           <div>
             <h3>Notwendig</h3>
-            <p>Erforderlich fuer Grundfunktionen der Website und um Ihre Datenschutz-Auswahl zu speichern.</p>
+            <p>Erforderlich für Grundfunktionen der Website und um Ihre Datenschutz-Auswahl zu speichern.</p>
           </div>
           <label class="cookie-switch">
             <input type="checkbox" checked disabled />
@@ -152,7 +163,7 @@
         <div class="cookie-option">
           <div>
             <h3>Statistik</h3>
-            <p>Nur fuer Reichweitenmessung oder Analyse. Auf dieser Website derzeit nicht aktiv eingebunden.</p>
+            <p>Nur für Reichweitenmessung oder Analyse. Auf dieser Website derzeit nicht aktiv eingebunden.</p>
           </div>
           <label class="cookie-switch">
             <input type="checkbox" data-cookie-checkbox="analytics" />
@@ -162,7 +173,7 @@
         <div class="cookie-option">
           <div>
             <h3>Marketing</h3>
-            <p>Nur fuer externe Werbe-, Tracking- oder Remarketing-Dienste. Auf dieser Website derzeit nicht aktiv eingebunden.</p>
+            <p>Nur für externe Werbe-, Tracking- oder Remarketing-Dienste. Auf dieser Website derzeit nicht aktiv eingebunden.</p>
           </div>
           <label class="cookie-switch">
             <input type="checkbox" data-cookie-checkbox="marketing" />
@@ -197,6 +208,7 @@
     banner.querySelector('[data-cookie-action="accept"]').addEventListener("click", acceptAll);
     banner.querySelector('[data-cookie-action="reject"]').addEventListener("click", rejectAll);
     banner.querySelector('[data-cookie-action="settings"]').addEventListener("click", openSettings);
+    banner.querySelector('[data-cookie-action="settings-compact"]').addEventListener("click", openSettings);
 
     modal.querySelectorAll('[data-cookie-action="accept"]').forEach((button) => {
       button.addEventListener("click", acceptAll);
@@ -250,12 +262,19 @@
   function toggleBanner(visible) {
     if (!banner) return;
     banner.hidden = !visible;
+    updateBannerMode();
   }
 
   function toggleModal(open) {
     if (!modal) return;
     modal.hidden = !open;
     document.body.classList.toggle("cookie-modal-open", open);
+  }
+
+  function updateBannerMode() {
+    if (!banner) return;
+
+    banner.classList.toggle("cookie-banner--compact", !preferences && isLegalPage());
   }
 
   function updateStatusButton() {
@@ -279,6 +298,7 @@
     buildUi();
     applyPreferences();
     toggleBanner(!preferences);
+    updateBannerMode();
 
     window.DPHolzbauCookieConsent = {
       getPreferences,
